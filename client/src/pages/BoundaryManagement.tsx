@@ -3,7 +3,7 @@ import { Navigation } from "@/components/Navigation";
 import { BoundaryForm } from "@/components/BoundaryForm";
 import { BoundaryList } from "@/components/BoundaryList";
 import { useToast } from "@/hooks/use-toast";
-import { MapContainer, TileLayer , Marker  } from 'react-leaflet';
+import { MapContainer, TileLayer , Marker , Circle } from 'react-leaflet';
 import { LatLngExpression, Popup } from "leaflet";
 
 const position: LatLngExpression = [51.505, -0.09];
@@ -90,7 +90,7 @@ const BoundaryManagement = () => {
 
         {/* Map placeholder */}
         <div className="mt-8">
-          <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+          <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center z-[-10]">
             {/* <p className="text-muted-foreground">
               📍 Your Leaflet map will be integrated here
             </p>
@@ -103,9 +103,17 @@ const BoundaryManagement = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={position}>
-                
-              </Marker>
+              {
+                boundaries.map(boundary => (
+                  <Circle
+                    key={boundary.id}
+                    center={[boundary.centerLat, boundary.centerLng]}
+                    radius={boundary.radius}
+                    pathOptions={{ color: boundary.type === 'tourist' ? 'green' : 'red' }}
+                  >
+                  </Circle>
+                ))
+              } 
             </MapContainer>
           </div>
         </div>
