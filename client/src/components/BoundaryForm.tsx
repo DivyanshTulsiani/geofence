@@ -96,10 +96,10 @@ export function BoundaryForm({ onBoundaryAdd }: BoundaryFormProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="tourist">Tourist Zone</SelectItem>
-                  {/* <SelectItem value="emergency">Emergency Area</SelectItem> */}
+                  <SelectItem value="emergency">Emergency Area</SelectItem>
                   <SelectItem value="restricted">Restricted Zone</SelectItem>
-                  {/* <SelectItem value="safe">Safe Zone</SelectItem>
-                  <SelectItem value="custom">Custom</SelectItem> */}
+                  <SelectItem value="safe">Safe Zone</SelectItem>
+                  <SelectItem value="custom">Custom</SelectItem>
                 </SelectContent>
               </Select>
             </div>
