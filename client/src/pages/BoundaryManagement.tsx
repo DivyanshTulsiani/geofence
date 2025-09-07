@@ -3,6 +3,10 @@ import { Navigation } from "@/components/Navigation";
 import { BoundaryForm } from "@/components/BoundaryForm";
 import { BoundaryList } from "@/components/BoundaryList";
 import { useToast } from "@/hooks/use-toast";
+import { MapContainer, TileLayer , Marker  } from 'react-leaflet';
+import { LatLngExpression, Popup } from "leaflet";
+
+const position: LatLngExpression = [51.505, -0.09];
 
 interface Boundary {
   id: string;
@@ -17,6 +21,7 @@ interface Boundary {
 
 const BoundaryManagement = () => {
   const { toast } = useToast();
+  const position: LatLngExpression = [51.505, -0.09];
   const [boundaries, setBoundaries] = useState<Boundary[]>([
     {
       id: "demo-1",
@@ -86,12 +91,22 @@ const BoundaryManagement = () => {
         {/* Map placeholder */}
         <div className="mt-8">
           <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-            <p className="text-muted-foreground">
+            {/* <p className="text-muted-foreground">
               📍 Your Leaflet map will be integrated here
             </p>
             <p className="text-sm text-muted-foreground mt-2">
               Map will show all boundaries and allow interactive boundary creation
-            </p>
+            </p> */}
+            
+            <MapContainer center={position} zoom={13} style={{ height: "50vh", width: "100%" }}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={position}>
+                
+              </Marker>
+            </MapContainer>
           </div>
         </div>
       </main>
