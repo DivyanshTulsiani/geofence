@@ -27,7 +27,7 @@ interface GeofenceLocation {
 const geofenceLocations: GeofenceLocation[] = [
   { name: "Delhi", center: [28.7041, 77.1025], radius: 500, color: "green" },
   { name: "MSIT", center: [28.621212148168926, 77.0924230197659], radius: 150, color: "orange" },
-  { name: "Bangalore", center: [12.9716, 77.5946], radius: 500, color: "red" },
+  { name: "Smoker hub", center: [28.618676501588496, 77.0918869629507], radius: 20, color: "red" },
   { name: "Chennai", center: [13.0827, 80.2707], radius: 500, color: "green" },
 ];
 
