@@ -27,7 +27,7 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
-
+//abhimanyu chnage
 // Geofence config
 interface GeofenceLocation {
   name: string;
@@ -40,8 +40,8 @@ const geofenceLocations: GeofenceLocation[] = [
   { name: "Delhi", center: [28.7041, 77.1025], side: 1000, color: "green" },
   
   // MSIT Area - 50 randomly distributed squares without overlap
-  { name: "MSIT-Zone1", center: [28.621528693528536, 77.09284506436518], side: 30, color: "orange" },
-  { name: "MSIT-Zone2", center: [28.620621095544234, 77.09184302602019], side: 30, color: "green" },
+  { name: "MSIT-Zone1", center: [28.621528693528536, 77.09284506436518], side: 90, color: "orange" },
+  { name: "MSIT-Zone2", center: [28.620621095544234, 77.09184302602019], side: 90, color: "green" },
 ];
 
 // Default to first location for initial map center
