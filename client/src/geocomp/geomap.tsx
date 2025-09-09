@@ -64,7 +64,7 @@ const geofenceLocations: GeofenceLocation[] = [
   
   { name: "MSIT-Zone21", center: [28.620890, 77.09112], side: 30, color: "red" },
   { name: "MSIT-Zone22", center: [28.622256, 77.09245], side: 30, color: "orange" },
-  { name: "MSIT-Zone23", center: [28.620377, 77.091885], side: 30, color: "green" },
+  { name: "MSIT-Zone23", center: [28.620595483004568, 77.09182903127324], side: 50, color: "green" },
   { name: "MSIT-Zone24", center: [28.621678, 77.09323], side: 30, color: "red" },
   { name: "MSIT-Zone25", center: [28.621834, 77.09134], side: 30, color: "orange" },
   { name: "MSIT-Zone26", center: [28.620589, 77.09289], side: 30, color: "green" },
