@@ -17,14 +17,29 @@ L.Icon.Default.mergeOptions({
 });
 
 // Geofence config
-const fenceCenter: LatLngExpression = [28.7041, 77.1025]; // Delhi
-const radius: number = 500; // meters
+interface GeofenceLocation {
+  name: string;
+  center: LatLngExpression;
+  radius: number;
+  color: "green" | "orange" | "red";
+}
+
+const geofenceLocations: GeofenceLocation[] = [
+  { name: "Delhi", center: [28.7041, 77.1025], radius: 500, color: "green" },
+  { name: "MSIT", center: [28.621212148168926, 77.0924230197659], radius: 150, color: "orange" },
+  { name: "Bangalore", center: [12.9716, 77.5946], radius: 500, color: "red" },
+  { name: "Chennai", center: [13.0827, 80.2707], radius: 500, color: "green" },
+];
+
+// Default to first location for initial map center
+const defaultCenter: LatLngExpression = geofenceLocations[0].center;
 
 interface LocationWatcherProps {
   setInside: (inside: boolean) => void;
+  setCurrentLocation: (location: string) => void;
 }
 
-function LocationWatcher({ setInside }: LocationWatcherProps) {
+function LocationWatcher({ setInside, setCurrentLocation }: LocationWatcherProps) {
   const map = useMap();
   const [marker, setMarker] = useState<LeafletMarker | null>(null);
 
@@ -43,22 +58,35 @@ function LocationWatcher({ setInside }: LocationWatcherProps) {
           map.setView([latitude, longitude], 15);
         }
 
-        // Check if inside geofence
-        const distance = map.distance([latitude, longitude], fenceCenter);
-        setInside(distance <= radius);
+        // Check if inside any geofence
+        let isInsideAny = false;
+        let currentLocationName = "Unknown";
+
+        for (const location of geofenceLocations) {
+          const distance = map.distance([latitude, longitude], location.center);
+          if (distance <= location.radius) {
+            isInsideAny = true;
+            currentLocationName = location.name;
+            break;
+          }
+        }
+
+        setInside(isInsideAny);
+        setCurrentLocation(currentLocationName);
       },
       (err) => console.error("Geolocation error:", err),
       { enableHighAccuracy: true }
     );
 
     return () => navigator.geolocation.clearWatch(watchId);
-  }, [map, marker, setInside]);
+  }, [map, marker, setInside, setCurrentLocation]);
 
   return null;
 }
 
 export default function GeofenceMap() {
   const [inside, setInside] = useState<boolean | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<string>("");
 
   return (
     <div>
@@ -80,23 +108,33 @@ export default function GeofenceMap() {
         {inside === null
           ? "Checking location…"
           : inside
-          ? "✅ Inside geofence"
-          : "❌ Outside geofence"}
+          ? `✅ Inside ${currentLocation} geofence`
+          : "❌ Outside all geofences"}
       </div>
 
       {/* Map */}
       <MapContainer
-        center={fenceCenter}
+        center={defaultCenter}
         zoom={13}
         style={{ height: "100vh", width: "100%" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Circle
-          center={fenceCenter}
-          radius={radius}
-          pathOptions={{ color: "red" }}
-        />
-        <LocationWatcher setInside={setInside} />
+        
+        {/* Render all geofence circles */}
+        {geofenceLocations.map((location, index) => (
+          <Circle
+            key={index}
+            center={location.center}
+            radius={location.radius}
+            pathOptions={{ 
+              color: location.color, 
+              fillColor: location.color, 
+              fillOpacity: 0.1 
+            }}
+          />
+        ))}
+        
+        <LocationWatcher setInside={setInside} setCurrentLocation={setCurrentLocation} />
       </MapContainer>
     </div>
   );
