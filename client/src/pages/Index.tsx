@@ -1,69 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
-import { SafetyStatus } from "@/components/SafetyStatus";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RefreshCw } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle, AlertTriangle, MapPin } from "lucide-react";
 import GeofenceMap from "@/geocomp/geomap";
 
 const Index = () => {
-  const { toast } = useToast();
-  const [isInSafeZone, setIsInSafeZone] = useState(true);
-  const [isTracking, setIsTracking] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState({
-    lat: 40.7580,
-    lng: -73.9855,
-    address: "Times Square, New York, NY"
-  });
-
-  const activeBoundary = {
-    name: "Downtown Tourist Zone",
-    id: "demo-1"
-  };
-
-  // Simulate location tracking
-  useEffect(() => {
-    if (isTracking) {
-      const interval = setInterval(() => {
-        // Simulate random location changes
-        const newLat = currentLocation.lat + (Math.random() - 0.5) * 0.001;
-        const newLng = currentLocation.lng + (Math.random() - 0.5) * 0.001;
-        
-        setCurrentLocation({
-          lat: newLat,
-          lng: newLng,
-          address: "Updated location coordinates"
-        });
-
-        // Randomly toggle safe zone status for demo
-        if (Math.random() < 0.1) {
-          setIsInSafeZone(prev => !prev);
-        }
-      }, 3000);
-
-      return () => clearInterval(interval);
-    }
-  }, [isTracking, currentLocation.lat, currentLocation.lng]);
-
-  const toggleTracking = () => {
-    setIsTracking(!isTracking);
-    toast({
-      title: isTracking ? "Tracking Stopped" : "Tracking Started",
-      description: isTracking 
-        ? "Location monitoring has been paused." 
-        : "Real-time location monitoring is now active.",
-    });
-  };
-
-  const simulateLocationChange = () => {
-    setIsInSafeZone(!isInSafeZone);
-    toast({
-      title: "Location Status Changed",
-      description: `Status changed to ${!isInSafeZone ? "SAFE" : "OUTSIDE SAFE ZONE"}`,
-      variant: !isInSafeZone ? "default" : "destructive",
-    });
-  };
+  const [isInSafeZone, setIsInSafeZone] = useState<boolean | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<string>("Locating...");
+  const [userCoordinates, setUserCoordinates] = useState<{ lat: number; lng: number } | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
@@ -73,65 +18,89 @@ const Index = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Safety Monitor</h1>
           <p className="text-muted-foreground">
-            Real-time monitoring of your current location within designated safe boundaries.
+            Interactive geofence map with multiple boundary zones.
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <SafetyStatus 
-              isInSafeZone={isInSafeZone}
-              currentLocation={currentLocation}
-              activeBoundary={activeBoundary}
-            />
-          </div>
-          
-          <div className="space-y-4">
-            {/* Controls */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Controls</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button 
-                  onClick={toggleTracking}
-                  variant={isTracking ? "destructive" : "safe"}
-                  className="w-full"
-                >
-                  <RefreshCw className={`h-4 w-4 ${isTracking ? "animate-spin" : ""}`} />
-                  {isTracking ? "Stop Tracking" : "Start Tracking"}
-                </Button>
-                
-                <Button 
-                  onClick={simulateLocationChange}
-                  variant="outline"
-                  className="w-full"
-                >
-                  Demo: Toggle Status
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Map placeholder */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Live Map</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="aspect-square border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <p className="text-muted-foreground text-sm">
-                      🗺️ Leaflet Map Integration
-                      <GeofenceMap/>
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Real-time location tracking
-                    </p>
+        <div className="space-y-6">
+          {/* Safety Status Box */}
+          <Card className={`relative overflow-hidden ${
+            isInSafeZone === null 
+              ? "border-muted bg-gradient-to-br from-muted/5 to-muted/10"
+              : isInSafeZone 
+                ? "border-green-500 bg-gradient-to-br from-green-50 to-green-100" 
+                : "border-red-500 bg-gradient-to-br from-red-50 to-red-100"
+          }`}>
+            <CardHeader className="text-center pb-4">
+              <div className="flex justify-center mb-4">
+                {isInSafeZone === null ? (
+                  <MapPin className="h-12 w-12 text-muted-foreground animate-pulse" />
+                ) : isInSafeZone ? (
+                  <CheckCircle className="h-12 w-12 text-green-600 animate-pulse" />
+                ) : (
+                  <AlertTriangle className="h-12 w-12 text-red-600 animate-bounce" />
+                )}
+              </div>
+              <CardTitle className="text-xl">
+                {isInSafeZone === null 
+                  ? "Determining Location..." 
+                  : isInSafeZone 
+                    ? "You're Safe" 
+                    : "Outside Safe Zone"}
+              </CardTitle>
+              <Badge variant={
+                isInSafeZone === null 
+                  ? "secondary" 
+                  : isInSafeZone 
+                    ? "default" 
+                    : "destructive"
+              } className="mx-auto">
+                {isInSafeZone === null 
+                  ? "LOCATING" 
+                  : isInSafeZone 
+                    ? "SECURE" 
+                    : "ALERT"}
+              </Badge>
+            </CardHeader>
+            <CardContent className="text-center space-y-3">
+              <p className="text-muted-foreground">
+                {isInSafeZone === null 
+                  ? "Getting your current location and checking geofence boundaries..." 
+                  : isInSafeZone 
+                    ? "You are currently within a designated safe boundary." 
+                    : "You have moved outside the safe zone boundaries."}
+              </p>
+              
+              {userCoordinates && (
+                <div className="text-sm text-muted-foreground space-y-1">
+                  <div className="font-mono">
+                    📍 {userCoordinates.lat.toFixed(6)}, {userCoordinates.lng.toFixed(6)}
                   </div>
+                  {currentLocation !== "Unknown" && currentLocation !== "Locating..." && (
+                    <div className="text-xs font-medium text-blue-600">
+                      📍 Zone: {currentLocation}
+                    </div>
+                  )}
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Geofence Map */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Geofence Map</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="w-full h-[600px]">
+                <GeofenceMap 
+                  onSafetyStatusChange={setIsInSafeZone}
+                  onLocationChange={setCurrentLocation}
+                  onCoordinatesChange={setUserCoordinates}
+                />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
     </div>
