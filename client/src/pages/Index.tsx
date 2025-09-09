@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import GeofenceMap from "@/geocomp/geomap";
 
 const Index = () => {
   const { toast } = useToast();
@@ -121,6 +122,7 @@ const Index = () => {
                   <div className="text-center">
                     <p className="text-muted-foreground text-sm">
                       🗺️ Leaflet Map Integration
+                      <GeofenceMap/>
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
                       Real-time location tracking
