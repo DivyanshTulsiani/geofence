@@ -8,7 +8,7 @@ import BoundaryManagement from "./pages/BoundaryManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-
+//sometimes his genius its almost frightening -ronit
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
