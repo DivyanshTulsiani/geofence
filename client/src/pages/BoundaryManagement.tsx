@@ -3,7 +3,7 @@ import { Navigation } from "@/components/Navigation";
 import { BoundaryForm } from "@/components/BoundaryForm";
 import { BoundaryList } from "@/components/BoundaryList";
 import { useToast } from "@/hooks/use-toast";
-
+import  GeofenceMap  from "@/geocomp/geomap"
 interface Boundary {
   id: string;
   name: string;
@@ -88,6 +88,7 @@ const BoundaryManagement = () => {
           <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
             <p className="text-muted-foreground">
               📍 Your Leaflet map will be integrated here
+              <GeofenceMap/>
             </p>
             <p className="text-sm text-muted-foreground mt-2">
               Map will show all boundaries and allow interactive boundary creation
