@@ -27,8 +27,7 @@ export function initOneSignal(appId: string): void {
       notifyButton: { enable: true },
       allowLocalhostAsSecureOrigin: true, // needed if testing locally
       serviceWorkerParam: { scope: "/" },
-      serviceWorkerPath: "OneSignalSDKWorker.js",
-      serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js",
+      serviceWorkerPath: "/sw.js", 
     });
 
     console.log("OneSignal initialized. Current permission:", Notification.permission);
