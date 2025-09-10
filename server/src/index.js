@@ -1,9 +1,23 @@
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
+
+// CORS configuration
+app.use(cors({
+  origin: [
+    "https://geofence-git-mlwork-divyansh-tulsianis-projects.vercel.app",
+    "http://localhost:5173", // for local development
+    "http://localhost:3000"  // for local development
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 app.get('/health',(req,res)=>{
