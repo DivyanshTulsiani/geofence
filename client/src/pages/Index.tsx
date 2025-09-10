@@ -4,13 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, AlertTriangle, MapPin } from "lucide-react";
 import GeofenceMap from "@/geocomp/geomap";
-import { alertWrongArea } from "../utils/alert";
 
 const Index = () => {
   const [isInSafeZone, setIsInSafeZone] = useState<boolean | null>(null);
   const [currentLocation, setCurrentLocation] = useState<string>("Locating...");
   const [userCoordinates, setUserCoordinates] = useState<{ lat: number; lng: number } | null>(null);
-  const [always,setAlways] = useState<boolean>(true);
+  // Notifications are triggered from the map component upon restricted zone entry
   
   // useEffect(() => {
   //   if (isInSafeZone === false) {
@@ -18,11 +17,7 @@ const Index = () => {
   //   }
   // }, [isInSafeZone]);
 
-  useEffect(() => {
-    if (true) {
-      alertWrongArea();
-    }
-  }, [always]);
+  // Notification is handled in map component when entering restricted zones.
 
   
 

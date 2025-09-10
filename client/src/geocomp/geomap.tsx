@@ -149,6 +149,8 @@ export default function GeofenceMap({
   const [selectedZone, setSelectedZone] = useState<GeofenceLocation | null>(null);
   const [userCoordinates, setUserCoordinates] = useState<{ lat: number; lng: number } | null>(null);
   const [sosAlert, setSosAlert] = useState<boolean>(false);
+  const [currentZone, setCurrentZone] = useState<GeofenceLocation | null>(null);
+  const [wasInRestricted, setWasInRestricted] = useState<boolean>(false);
 
   // Call parent callbacks when state changes
   React.useEffect(() => {
@@ -162,6 +164,45 @@ export default function GeofenceMap({
   React.useEffect(() => {
     onCoordinatesChange?.(userCoordinates);
   }, [userCoordinates, onCoordinatesChange]);
+
+  // Determine restricted zones and notify on entry
+  React.useEffect(() => {
+    const zone = geofenceLocations.find((z) => z.name === currentLocation) || null;
+    setCurrentZone(zone);
+
+    const isRestricted = zone ? (zone.color === "red" || zone.color === "orange") : false;
+
+    if (isRestricted && !wasInRestricted) {
+      // Fire a one-time notification on entering a restricted zone
+      (async () => {
+        try {
+          if (typeof window === "undefined" || !("Notification" in window)) return;
+
+          let permission: NotificationPermission = Notification.permission;
+          if (permission !== "granted") {
+            try {
+              permission = await Notification.requestPermission();
+            } catch {
+              // ignore
+            }
+          }
+
+          if (permission === "granted") {
+            new Notification("Restricted area entered", {
+              body: `You have entered a restricted zone${zone?.name ? ": " + zone.name : ""}. Please exit the area.`,
+              icon: "/pwa-192x192.png",
+              tag: "restricted-zone-alert",
+            });
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error("Notification error", err);
+        }
+      })();
+    }
+
+    setWasInRestricted(isRestricted);
+  }, [currentLocation, wasInRestricted]);
 
   const handlePanicButton = () => {
     setSosAlert(true);
