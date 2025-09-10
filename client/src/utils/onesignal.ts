@@ -37,7 +37,7 @@ export function initOneSignal(appId: string): void {
     window.OneSignal.showSlidedownPrompt();
 
     // Log the Player ID (subscriber ID)
-    window.OneSignal.getUserId().then((id: string | null) => {
+    window.OneSignal.getUserId().then((id: any) => {
       console.log("OneSignal Player ID:", id);
     });
 
