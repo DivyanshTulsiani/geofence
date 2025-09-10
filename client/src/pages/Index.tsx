@@ -10,13 +10,22 @@ const Index = () => {
   const [isInSafeZone, setIsInSafeZone] = useState<boolean | null>(null);
   const [currentLocation, setCurrentLocation] = useState<string>("Locating...");
   const [userCoordinates, setUserCoordinates] = useState<{ lat: number; lng: number } | null>(null);
+  const [always,setAlways] = useState<boolean>(true);
   
+  // useEffect(() => {
+  //   if (isInSafeZone === false) {
+  //     alertWrongArea();
+  //   }
+  // }, [isInSafeZone]);
+
   useEffect(() => {
-    if (isInSafeZone === false) {
+    if (true) {
       alertWrongArea();
     }
-  }, [isInSafeZone]);
+  }, [always]);
+
   
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
