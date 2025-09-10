@@ -3,8 +3,8 @@
 // This is the injection point for the precache manifest.
 // The vite-plugin-pwa will inject the list of files here.
 // This must be present in your custom sw.js file.
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-precaching.prod.js');
-const { precacheAndRoute } = self.workbox.precaching;
+import { precacheAndRoute } from 'workbox-precaching';
+// const { precacheAndRoute } = self.workbox.precaching;
 
 // Use importScripts to load the OneSignal SDK worker.
 importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js');
