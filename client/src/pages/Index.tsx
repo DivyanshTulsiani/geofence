@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, AlertTriangle, MapPin } from "lucide-react";
 import GeofenceMap from "@/geocomp/geomap";
+import { alertWrongArea } from "../utils/alert";
 
 const Index = () => {
   const [isInSafeZone, setIsInSafeZone] = useState<boolean | null>(null);
   const [currentLocation, setCurrentLocation] = useState<string>("Locating...");
   const [userCoordinates, setUserCoordinates] = useState<{ lat: number; lng: number } | null>(null);
-
+  
+  useEffect(() => {
+    if (isInSafeZone === false) {
+      alertWrongArea();
+    }
+  }, [isInSafeZone]);
+  
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -38,7 +45,10 @@ const Index = () => {
                 ) : isInSafeZone ? (
                   <CheckCircle className="h-12 w-12 text-green-600 animate-pulse" />
                 ) : (
+                  <>
                   <AlertTriangle className="h-12 w-12 text-red-600 animate-bounce" />
+                  </>
+                  
                 )}
               </div>
               <CardTitle className="text-xl">

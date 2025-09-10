@@ -3,7 +3,8 @@ import { Navigation } from "@/components/Navigation";
 import { BoundaryForm } from "@/components/BoundaryForm";
 import { BoundaryList } from "@/components/BoundaryList";
 import { useToast } from "@/hooks/use-toast";
-import  GeofenceMap  from "@/geocomp/geomap"
+import  GeofenceMap  from "@/geocomp/geomap";
+import { alertWrongArea } from "../utils/alert";
 interface Boundary {
   id: string;
   name: string;

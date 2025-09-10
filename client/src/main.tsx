@@ -2,6 +2,15 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
+import { initOneSignal } from "./utils/onesignal";
+
+
+
+
+if (typeof window !== "undefined") {
+  initOneSignal(import.meta.env.VITE_ONESIGNAL_APP_ID!);
+}
+
 
 createRoot(document.getElementById("root")!).render(<App />);
 
