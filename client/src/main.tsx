@@ -9,7 +9,6 @@ console.log("Env OneSignal ID:", import.meta.env.VITE_ONESIGNAL_APP_ID);
 
 if (typeof window !== "undefined") {
   initOneSignal(import.meta.env.VITE_ONESIGNAL_APP_ID!);
-  console.log(process.env.VITE_ONESIGNAL_APP_ID)
 }
 
 
