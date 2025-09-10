@@ -8,7 +8,7 @@ const app = express();
 
 console.log(process.env.ONESIGNAL_REST_API_KEY)
 
-// CORS configuration
+// CORS configuration 
 app.use(cors({
   origin: [
     "https://geofence-git-mlwork-divyansh-tulsianis-projects.vercel.app",
