@@ -20,7 +20,7 @@ app.post("/send-notification", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${process.env.ONESIGNAL_REST_API_KEY!}`,
+        Authorization: `Basic ${process.env.ONESIGNAL_REST_API_KEY}`,
       },
       body: JSON.stringify({
         app_id: process.env.ONESIGNAL_APP_ID,
