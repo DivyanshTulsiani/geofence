@@ -5,7 +5,7 @@ export async function alertWrongArea(): Promise<void> {
     return;
   }
 
-  await fetch("http://localhost:3000/send-notification", { // replace with your backend URL
+  await fetch("https://geofence-37q0.onrender.com/send-notification", { // replace with your backend URL
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
