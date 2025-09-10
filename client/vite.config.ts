@@ -16,6 +16,9 @@ export default defineConfig(({ mode }) => ({
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'sw.js',
+      workbox: {
+        importScripts: [], // This is the key change
+      },
       includeAssets: [
         "favicon.ico",
         "apple-touch-icon.png",
