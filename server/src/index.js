@@ -36,13 +36,11 @@ app.post("/send-notification", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Key ${process.env.ONESIGNAL_REST_API_KEY}`,
+        Authorization: `Basic ${process.env.ONESIGNAL_REST_API_KEY}`,
       },
       body: JSON.stringify({
         app_id: process.env.ONESIGNAL_APP_ID,
-        filters: [
-          { field: "tag", key: "userId", relation: "=", value: userId },
-        ],
+        included_segments: ["All"],
         headings: { en: title },
         contents: { en: message },
       }),
